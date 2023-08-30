@@ -2,12 +2,17 @@ FROM ruby:2.5.1
 
 ENV RAILS_ENV production
 
+ENV RAILS_ENV production
+RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak
+
+RUN echo "deb http://archive.debian.org/debian/ jessie main" >>/etc/apt/sources.list
+RUN echo "deb-src http://archive.debian.org/debian/ jessie main" >>/etc/apt/sources.list
+
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        imagemagick \
-        libsqlite3-dev \
-        nginx \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get install -y --allow-unauthenticated nginx
+RUN apt-get install -y --allow-unauthenticated imagemagick
+RUN apt-get install -y --allow-unauthenticated libsqlite3-dev
+RUN rm -rf /var/lib/apt/lists/*
 
 RUN gem sources --add https://gems.ruby-china.com --remove https://rubygems.org/
 
